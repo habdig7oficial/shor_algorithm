@@ -3,6 +3,8 @@ use roqoqo::{Circuit, operations::*};
 use roqollage;
 use roqoqo_qasm::*;
 
+use std::fs::File;
+use std::io::prelude::*;
 
 fn euclid(a: u32, b: u32) -> u32 {
     let mut res = a % b;
@@ -32,11 +34,17 @@ fn shor(number: u32) -> u32 {
         .expect("error")
         .save("circuit.png");
 
-    let asm = roqoqo_qasm::call_circuit(&circuit, "q", QasmVersion::V3point0(Qasm3Dialect::Roqoqo)).unwrap();
+    let asm_vec = roqoqo_qasm::call_circuit(&circuit, "q", QasmVersion::V3point0(Qasm3Dialect::Roqoqo)).unwrap();
 
-    for i in asm {
-        println!("{i}");
+    let file = File::create("circuit.qasm");
+    let mut openqasm: String = String::from("");
+    for i in asm_vec {
+        openqasm += &i;
+        openqasm += "\n";
     }
+    let _ = file 
+        .expect("error")
+        .write_all(openqasm.as_bytes());
 
     return 0;
 }
