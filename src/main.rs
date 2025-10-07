@@ -1,9 +1,8 @@
 use rand::prelude::*;
 use roqoqo::{Circuit, operations::*};
 use roqollage;
+use roqoqo_qasm::*;
 
-use std::fs::File;
-use std::io::prelude::*;
 
 fn euclid(a: u32, b: u32) -> u32 {
     let mut res = a % b;
@@ -29,13 +28,15 @@ fn shor(number: u32) -> u32 {
     circuit += DefinitionBit::new("bit_register".to_string(), 2, false);
     circuit.add_operation(Hadamard::new(0));
 
-    let image = roqollage::circuit_to_image(&circuit, None, roqollage::RenderPragmas::All, None, None)
-        .expect("error");
+    let _ = roqollage::circuit_to_image(&circuit, None, roqollage::RenderPragmas::All, None, None)
+        .expect("error")
+        .save("circuit.png");
 
-    //roqollage::save_circuit(image);
-    //print!("{:?}", image);
+    let asm = roqoqo_qasm::call_circuit(&circuit, "q", QasmVersion::V3point0(Qasm3Dialect::Roqoqo)).unwrap();
 
-    image.save("hello.png");
+    for i in asm {
+        println!("{i}");
+    }
 
     return 0;
 }
