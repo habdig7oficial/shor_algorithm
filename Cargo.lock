@@ -2027,6 +2027,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "quest-sys"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "70192c9e02bc0538e2e305601c86298f2634eecfd729c65f38ab44138d5d95b1"
+dependencies = [
+ "cc",
+]
+
+[[package]]
 name = "quick-error"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2370,6 +2379,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "roqoqo-quest"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf1fdfbf93ad474585af7a28b26fd0fc2969663f9556719f829ad9145924a91d"
+dependencies = [
+ "ndarray",
+ "num-complex",
+ "qoqo_calculator",
+ "quest-sys",
+ "rand 0.9.2",
+ "roqoqo",
+ "serde",
+ "sha2",
+]
+
+[[package]]
 name = "roxmltree"
 version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2628,6 +2653,7 @@ dependencies = [
  "roqollage",
  "roqoqo",
  "roqoqo-qasm",
+ "roqoqo-quest",
 ]
 
 [[package]]

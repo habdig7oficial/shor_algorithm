@@ -2,6 +2,8 @@ use rand::prelude::*;
 use roqoqo::{Circuit, operations::*};
 use roqollage;
 use roqoqo_qasm::*;
+use roqoqo_quest::Backend;
+use roqoqo::prelude::*;
 
 use std::fs::File;
 use std::io::prelude::*;
@@ -27,8 +29,9 @@ fn shor(number: u32) -> u32 {
     }
 
     let mut circuit = Circuit::new();
-    circuit += DefinitionBit::new("bit_register".to_string(), 2, false);
-    circuit.add_operation(Hadamard::new(0));
+    circuit += DefinitionBit::new("$r0".to_string(), 1, true);
+    circuit += Hadamard::new(0);
+    circuit += MeasureQubit::new(0, "$r0".to_string(), 0);
 
     let _ = roqollage::circuit_to_image(&circuit, None, roqollage::RenderPragmas::All, None, None)
         .expect("error")
@@ -45,6 +48,12 @@ fn shor(number: u32) -> u32 {
     let _ = file 
         .expect("error")
         .write_all(openqasm.as_bytes());
+
+    let simulate = Backend::new(1, None);
+    
+    let res = simulate.run_circuit(&circuit).unwrap();
+
+    println!("{:?}",res);
 
     return 0;
 }
